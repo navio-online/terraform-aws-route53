@@ -17,6 +17,12 @@ variable "vpc_id" {
   default     = "none"
 }
 
+variable "tags" {
+  type = map
+  description = "Tags"
+  default = {}
+}
+
 variable "records" {
   description = "List of DNS Records to add to the DNS zone"
   type = object({
@@ -33,17 +39,6 @@ variable "records" {
   }
 }
 
-# locals {
-#   default_records = {
-#     names  = []
-#     types  = []
-#     ttls   = []
-#     values = []
-#   }
-#   # merged_records = local.default_records
-#   merged_records = merge(local.default_records, var.records)
-# }
-
 variable "aliases" {
   description = "List of DNS aliaseses to add to the DNS zone"
   type = object({
@@ -57,13 +52,3 @@ variable "aliases" {
     zones_id = []
   }
 }
-
-# locals {
-#   default_aliases = {
-#     names = []
-#     values = []
-#     zones_id = []
-#   }
-#   merged_aliases = local.default_aliases
-#   # merged_aliases = merge(local.default_aliases, var.aliases)
-# }
