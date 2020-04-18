@@ -1,5 +1,7 @@
 output "zone_id" {
-  value = var.vpc_id == "none" ? "${element(compact(concat(list(var.zone_id), aws_route53_zone.this_public.*.id)), 0)}" : "${element(compact(concat(list(var.zone_id), aws_route53_zone.this_private.*.id)), 0)}"
+  value = var.zone_id != "none" ? var.zone_id : (
+      var.vpc_id == "none" ? element(aws_route53_zone.this_public.*.id, 0) : element(aws_route53_zone.this_private.*.id, 0)
+    )
 }
 
 output "ns_servers" {
