@@ -38,5 +38,5 @@ resource "aws_route53_record" "this" {
   name    = "${var.records["name"]}${var.domain}"
   type    = var.records["type"]
   ttl     = var.records["ttl"]
-  records = sort(var.records["values"])
+  records = var.records["values"]
 }
