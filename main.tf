@@ -6,9 +6,7 @@ resource "aws_route53_zone" "this_public" {
   name = var.domain
   comment = var.description
 
-  tags = {
-    merge(var.tags, map("Name", var.domain))
-  }
+  tags = merge(var.tags, map("Name", var.domain))
 }
 
 resource "aws_route53_zone" "this_private" {
@@ -20,9 +18,7 @@ resource "aws_route53_zone" "this_private" {
     vpc_id = var.vpc_id
   }
 
-  tags = {
-    merge(var.tags, map("Name", var.domain))
-  }
+  tags = merge(var.tags, map("Name", var.domain))
 }
 
 resource "aws_route53_record" "that" {
