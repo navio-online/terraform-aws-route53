@@ -21,11 +21,22 @@ resource "aws_route53_zone" "this_private" {
   tags = merge(var.tags, map("Name", var.domain))
 }
 
-resource "aws_route53_record" "that" {
-  count = var.zone_id != "none" && length(var.records["names"]) > 0 ? length(var.records["names"]) : 0
+# resource "aws_route53_record" "this_public" {
+#   depends_on  = [ aws_route53_zone.this_public ]
+#   count = length(var.records["names"])
+#   zone_id = var.zone_id != "none" ? var.zone_id : aws_route53_zone.this_public.0.zone_id
+#   name = "${element(var.records["names"], count.index)}${var.domain}"
+#   type = element(var.records["types"], count.index)
+#   ttl = element(var.records["ttls"], count.index)
+#   records = split(",", element(var.records["values"], count.index))
+# }
+
+resource "aws_route53_record" "this" {
+  count   = var.zone_id != "none" && length(var.records["values"]) > 0 ? 1 : 0
+
   zone_id = var.zone_id
-  name = "${element(var.records["names"], count.index)}${var.domain}"
-  type = element(var.records["types"], count.index)
-  ttl = element(var.records["ttls"], count.index)
-  records = split(",", element(var.records["values"], count.index))
+  name    = "${var.records["name"]}${var.domain}"
+  type    = var.records["type"]
+  ttl     = var.records["ttl"]
+  records = sort(var.records["values"])
 }
