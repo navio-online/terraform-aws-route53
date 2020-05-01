@@ -25,30 +25,21 @@ variable "tags" {
 
 variable "records" {
   description = "List of DNS Records to add to the DNS zone"
-  type = object({
-    name   = string
-    type   = string
-    ttl    = string
-    values = list(string)
-  })
-  default = {
-    name   = ""
-    type   = ""
-    ttl    = ""
-    values = []
-  }
+  type = list(object({
+      name   = string
+      type   = string
+      ttl    = string
+      values = list(string)
+    }))
+  default = []
 }
 
-# variable "aliases" {
-#   description = "List of DNS aliaseses to add to the DNS zone"
-#   type = object({
-#     names = list(string)
-#     types = list(string)
-#     zones_id = list(string)
-#   })
-#   default = {
-#     names = []
-#     types = []
-#     zones_id = []
-#   }
-# }
+variable "aliases" {
+  description = "List of DNS aliaseses to add to the DNS zone"
+  type = list(object({
+      name    = string
+      zone_id = string
+      value   = string
+    }))
+  default = []
+}
