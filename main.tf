@@ -22,21 +22,21 @@ resource "aws_route53_zone" "this_private" {
 }
 
 resource "aws_route53_record" "this" {
-  count   = var.zone_id != "none" && length(var.records) > 0 ? 1 : 0
+  count   = var.zone_id != "none" && length(var.records) > 0 ? length(var.records) : 0
 
   zone_id = var.zone_id
 
-  name    = "${element(var.records, count.index)["name"]}.${var.domain}"
+  name    = element(var.records, count.index)["name"] != "" ? "${element(var.records, count.index)["name"]}.${var.domain}" : "${var.domain}"
   type    = element(var.records, count.index)["type"]
   ttl     = element(var.records, count.index)["ttl"]
   records = element(var.records, count.index)["values"]
 }
 
 resource "aws_route53_record" "alias" {
-  count   = var.zone_id != "none" && length(var.aliases) > 0 ? 1 : 0
+  count   = var.zone_id != "none" && length(var.aliases) > 0 ? length(var.aliases) : 0
 
   zone_id = var.zone_id
-  name    = "${element(var.aliases, count.index)["name"]}.${var.domain}"
+  name    = element(var.aliases, count.index)["name"] != "" ? "${element(var.aliases, count.index)["name"]}.${var.domain}" : "${var.domain}"
   type    = "A"
 
   alias {
